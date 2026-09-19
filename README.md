@@ -1,2 +1,5 @@
-# fey-ds
-Fey-inspired React + Tailwind design system gallery
+# Fey DS
+
+Fey-inspired React + Tailwind gallery.
+
+Live: https://amtsh.github.io/fey-ds/
