@@ -10,15 +10,22 @@
 tailwind.config = { theme: { extend: {
   colors: { fey: { 0:"#000",1:"#0b0b0b",2:"#131313",3:"#1a1b20",ink:"#fff",high:"#e6e6e6",mid:"#868f97",low:"#787878",up:"#4ebe96",down:"#ef5350",link:"#479ffa",hot:"#ffa16c" } },
   fontFamily: { sans: ["Inter","sans-serif"] },
-  letterSpacing: { hero:"-0.08em", title:"-0.32px", kicker:"0.16em" }
+  letterSpacing: { hero:"-0.08em", title:"-0.32px", kicker:"0.16em" },
+  boxShadow: {
+    overlay: "0 0 44px rgba(0,0,0,0.8)",
+    sticky: "0 0 35px rgba(0,0,0,0.5)",
+    edge: "0 1px 0 rgba(0,0,0,0.85)"
+  }
 }}}
 </script>
 <script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
 <script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <style>
+:root { --hairline: rgba(255,255,255,0.1); }
 html,body{background:#000;color:#e6e6e6;margin:0;font-family:Inter,sans-serif;-webkit-font-smoothing:antialiased}
 .tabular{font-variant-numeric:tabular-nums}
+.hairline{border-color:var(--hairline)}
 </style>
 </head>
 <body>
@@ -63,7 +70,7 @@ function Select({ value, options, onChange }) {
 function LinkText({ children, href = "#" }) {
   return <a href={href} className="text-[14px] font-semibold text-fey-link hover:underline">{children}</a>;
 }
-function Divider() { return <div className="h-px w-full bg-white/[0.06]" />; }
+function Divider() { return <div className="h-px w-full bg-white/10" />; }
 function Avatar({ initials, size = 32 }) {
   return <span className="inline-flex items-center justify-center rounded-full bg-fey-2 text-[12px] font-semibold text-fey-ink" style={{ width: size, height: size }}>{initials}</span>;
 }
@@ -82,10 +89,10 @@ function Skeleton() {
   return <div className="space-y-2"><div className="h-4 w-2/3 animate-pulse rounded bg-fey-2" /><div className="h-4 w-full animate-pulse rounded bg-fey-2" /><div className="h-4 w-5/6 animate-pulse rounded bg-fey-2" /></div>;
 }
 function Tabs({ tabs, value, onChange }) {
-  return <div className="flex gap-5 border-b border-white/[0.06]">{tabs.map((t) => <button key={t} onClick={() => onChange(t)} className={cn("pb-2 text-[14px] font-semibold", value === t ? "text-fey-ink" : "text-fey-mid")}>{t}</button>)}</div>;
+  return <div className="flex gap-5 border-b border-white/10">{tabs.map((t) => <button key={t} onClick={() => onChange(t)} className={cn("pb-2 text-[14px] font-semibold", value === t ? "text-fey-ink" : "text-fey-mid")}>{t}</button>)}</div>;
 }
 function Toast({ children, onClose }) {
-  return <div className="inline-flex items-center gap-3 rounded-[12px] bg-fey-2 px-3.5 py-2 text-[13px] font-semibold text-fey-ink">{children}<button onClick={onClose} className="text-fey-low">x</button></div>;
+  return <div className="inline-flex items-center gap-3 rounded-[12px] bg-fey-2 px-3.5 py-2 text-[13px] font-semibold text-fey-ink shadow-overlay">{children}<button onClick={onClose} className="text-fey-low">x</button></div>;
 }
 function EmptyState({ onAdd }) {
   return <div className="rounded-[16px] bg-fey-1 px-6 py-10 text-center"><div className="text-[18px] font-bold text-fey-ink">No filings in range</div><p className="mt-2 text-[14px] font-semibold text-fey-mid">Widen the period or add a ticker.</p><div className="mt-4"><PillButton onClick={onAdd}>Add ticker</PillButton></div></div>;
@@ -134,7 +141,7 @@ function TickerHero({ ticker, name, price, change }) {
 }
 function DataTable() {
   const rows = [["Revenue","394.3B","383.3B","+2.9%"],["Gross profit","180.7B","170.8B","+5.8%"],["Operating income","123.2B","114.3B","+7.8%"],["Net income","93.7B","97.0B","-3.4%"],["EPS","6.08","6.42","-5.3%"]];
-  return (<div className="overflow-hidden rounded-[16px] bg-fey-0"><table className="w-full text-left"><thead><tr className="text-[12px] font-semibold uppercase tracking-kicker text-fey-low"><th className="px-[18px] py-3">Metric</th><th className="px-[18px] py-3">FY24</th><th className="px-[18px] py-3">FY23</th><th className="px-[18px] py-3">YoY</th></tr></thead><tbody>{rows.map((r) => (<tr key={r[0]} className="border-t border-white/[0.04]"><td className="px-[18px] py-3 text-[14px] font-semibold text-fey-ink">{r[0]}</td><td className="tabular px-[18px] py-3 text-[14px] font-semibold text-fey-high">{r[1]}</td><td className="tabular px-[18px] py-3 text-[14px] font-semibold text-fey-mid">{r[2]}</td><td className={cn("tabular px-[18px] py-3 text-[14px] font-semibold", r[3].startsWith("-") ? "text-fey-down" : "text-fey-up")}>{r[3]}</td></tr>))}</tbody></table></div>);
+  return (<div className="overflow-hidden rounded-[16px] bg-fey-0"><table className="w-full text-left"><thead><tr className="text-[12px] font-semibold uppercase tracking-kicker text-fey-low"><th className="px-[18px] py-3">Metric</th><th className="px-[18px] py-3">FY24</th><th className="px-[18px] py-3">FY23</th><th className="px-[18px] py-3">YoY</th></tr></thead><tbody>{rows.map((r) => (<tr key={r[0]} className="border-t border-white/10"><td className="px-[18px] py-3 text-[14px] font-semibold text-fey-ink">{r[0]}</td><td className="tabular px-[18px] py-3 text-[14px] font-semibold text-fey-high">{r[1]}</td><td className="tabular px-[18px] py-3 text-[14px] font-semibold text-fey-mid">{r[2]}</td><td className={cn("tabular px-[18px] py-3 text-[14px] font-semibold", r[3].startsWith("-") ? "text-fey-down" : "text-fey-up")}>{r[3]}</td></tr>))}</tbody></table></div>);
 }
 function EarningsChip({ date, when }) {
   return <span className="inline-flex items-center gap-2 rounded-[99px] bg-fey-2 px-3 py-1.5 text-[12px] font-semibold"><span className="text-fey-ink">{date}</span><span className="text-fey-link">{when}</span></span>;
@@ -149,11 +156,11 @@ function CommandPalette({ open, onClose, onPick }) {
   const [q, setQ] = useState("");
   const items = [{k:"AAPL",t:"Apple Inc.",hint:"Equity"},{k:"MSFT",t:"Microsoft Corp.",hint:"Equity"},{k:"NVDA",t:"NVIDIA Corp.",hint:"Equity"},{k:"Filings",t:"Latest 10-K / 10-Q",hint:"Docs"}].filter((x) => (x.k + x.t).toLowerCase().includes(q.toLowerCase()));
   if (!open) return null;
-  return (<div className="fixed inset-0 z-50 flex items-start justify-center bg-black/70 pt-[12vh]" onClick={onClose}><div className="w-[min(560px,92vw)] overflow-hidden rounded-[16px] bg-fey-1" onClick={(e) => e.stopPropagation()}><div className="flex items-center gap-2 border-b border-white/[0.04] px-[18px] py-3"><input autoFocus value={q} onChange={(e) => setQ(e.target.value)} placeholder="Jump to ticker, filing, or command" className="w-full bg-transparent text-[16px] font-medium text-fey-ink outline-none" /><Kbd>esc</Kbd></div><div className="p-2">{items.map((it, i) => (<button key={it.k} onClick={() => { onPick && onPick(it.k); onClose(); }} className={cn("flex w-full items-center justify-between rounded-[12px] px-3 py-2.5 text-left", i === 0 && "bg-fey-2")}><div><div className="text-[14px] font-semibold text-fey-ink">{it.k}</div><div className="text-[12px] text-fey-mid">{it.t}</div></div><span className="text-[11px] font-semibold uppercase tracking-kicker text-fey-low">{it.hint}</span></button>))}</div></div></div>);
+  return (<div className="fixed inset-0 z-50 flex items-start justify-center bg-black/70 pt-[12vh]" onClick={onClose}><div className="w-[min(560px,92vw)] overflow-hidden rounded-[16px] bg-fey-1 shadow-overlay" onClick={(e) => e.stopPropagation()}><div className="flex items-center gap-2 border-b border-white/10 px-[18px] py-3"><input autoFocus value={q} onChange={(e) => setQ(e.target.value)} placeholder="Jump to ticker, filing, or command" className="w-full bg-transparent text-[16px] font-medium text-fey-ink outline-none" /><Kbd>esc</Kbd></div><div className="p-2">{items.map((it, i) => (<button key={it.k} onClick={() => { onPick && onPick(it.k); onClose(); }} className={cn("flex w-full items-center justify-between rounded-[12px] px-3 py-2.5 text-left", i === 0 && "bg-fey-2")}><div><div className="text-[14px] font-semibold text-fey-ink">{it.k}</div><div className="text-[12px] text-fey-mid">{it.t}</div></div><span className="text-[11px] font-semibold uppercase tracking-kicker text-fey-low">{it.hint}</span></button>))}</div></div></div>);
 }
 function Modal({ open, onClose }) {
   if (!open) return null;
-  return (<div className="fixed inset-0 z-40 flex items-center justify-center bg-black/70" onClick={onClose}><div className="w-[min(400px,92vw)] rounded-[16px] bg-fey-1 p-[18px]" onClick={(e) => e.stopPropagation()}><div className="text-[18px] font-bold text-fey-ink">Export sheet</div><p className="mt-2 text-[14px] font-semibold text-fey-mid">Download financials as CSV.</p><div className="mt-4 flex justify-end gap-2"><button onClick={onClose} className="rounded-[99px] px-3 py-1.5 text-[13px] font-semibold text-fey-mid">Cancel</button><PillButton onClick={onClose}>Export</PillButton></div></div></div>);
+  return (<div className="fixed inset-0 z-40 flex items-center justify-center bg-black/70" onClick={onClose}><div className="w-[min(400px,92vw)] rounded-[16px] bg-fey-1 p-[18px] shadow-overlay" onClick={(e) => e.stopPropagation()}><div className="text-[18px] font-bold text-fey-ink">Export sheet</div><p className="mt-2 text-[14px] font-semibold text-fey-mid">Download financials as CSV.</p><div className="mt-4 flex justify-end gap-2"><button onClick={onClose} className="rounded-[99px] px-3 py-1.5 text-[13px] font-semibold text-fey-mid">Cancel</button><PillButton onClick={onClose}>Export</PillButton></div></div></div>);
 }
 function App() {
   const [nav, setNav] = useState("Markets");
@@ -192,7 +199,7 @@ function App() {
       <Modal open={modal} onClose={() => setModal(false)} />
       {toast && (<div className="fixed bottom-5 right-5 z-30"><Toast onClose={() => setToast(false)}>Copied {alias}</Toast></div>)}
       <div className="mx-auto grid max-w-[1280px] grid-cols-1 lg:grid-cols-[240px_1fr_300px]">
-        <aside className="border-b border-white/[0.06] p-4 lg:border-b-0 lg:border-r">
+        <aside className="border-b border-white/10 p-4 lg:border-b-0 lg:border-r">
           <div className="mb-6 flex items-center justify-between"><div><div className="text-[12px] font-semibold uppercase tracking-kicker text-fey-low">Fey-inspired</div><div className="text-[18px] font-bold text-fey-ink">Markets</div></div><StatusDot on /></div>
           <div className="space-y-0.5">{[["Markets","*"],["Watchlist","#"],["Filings","="],["News","~"],["Settings","o"]].map(([label, icon]) => (<NavItem key={label} icon={icon} label={label} active={nav === label} onClick={() => setNav(label)} />))}</div>
           <Divider />
@@ -200,13 +207,15 @@ function App() {
           <div className="mt-6 flex items-center gap-3"><Avatar initials="AS" size={36} /><div><div className="text-[14px] font-semibold text-fey-ink">Amit</div><div className="text-[12px] text-fey-mid">Workspace</div></div></div>
         </aside>
         <main className="min-w-0 p-5">
-          <header className="mb-5 flex flex-wrap items-center gap-3">
-            <Breadcrumb parts={["Markets","US", alias]} />
-            <div className="ml-auto flex items-center gap-2">
-              <div className="w-[min(320px,100%)]"><SearchField value={q} onChange={setQ} onFocus={() => setCmd(true)} /></div>
-              <GhostIconButton label="Add">+</GhostIconButton>
-              <GhostIconButton label="More" onClick={() => setModal(true)}>...</GhostIconButton>
-              <span className="hidden items-center gap-1 sm:flex"><Kbd>cmd</Kbd><Kbd>K</Kbd></span>
+          <header className="sticky top-0 z-20 -mx-5 mb-5 bg-fey-0 px-5 py-3 shadow-sticky">
+            <div className="flex flex-wrap items-center gap-3">
+              <Breadcrumb parts={["Markets","US", alias]} />
+              <div className="ml-auto flex items-center gap-2">
+                <div className="w-[min(320px,100%)]"><SearchField value={q} onChange={setQ} onFocus={() => setCmd(true)} /></div>
+                <GhostIconButton label="Add">+</GhostIconButton>
+                <GhostIconButton label="More" onClick={() => setModal(true)}>...</GhostIconButton>
+                <span className="hidden items-center gap-1 sm:flex"><Kbd>cmd</Kbd><Kbd>K</Kbd></span>
+              </div>
             </div>
           </header>
           {nav === "Settings" ? (
@@ -259,7 +268,7 @@ function App() {
             </div>
           )}
         </main>
-        <aside className="border-t border-white/[0.06] p-4 lg:border-l lg:border-t-0">
+        <aside className="border-t border-white/10 p-4 lg:border-l lg:border-t-0">
           <div className="mb-3 flex items-center justify-between"><div className="text-[12px] font-semibold uppercase tracking-kicker text-fey-low">Watchlist</div><GhostIconButton label="Add" onClick={() => setCmd(true)}>+</GhostIconButton></div>
           {watch.map((w) => <WatchlistRow key={w.ticker} {...w} onClick={() => { setAlias(w.ticker); setNav("Markets"); }} />)}
           <Divider />
