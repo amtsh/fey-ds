@@ -1,0 +1,30 @@
+# Fey DS
+
+> Fey-inspired financial research UI design system and composed Markets demo.
+
+## Canonical pages
+
+- Markets demo: https://amtsh.github.io/fey-ds/
+- Design system gallery: https://amtsh.github.io/fey-ds/design-system/
+- Source repository: https://github.com/amtsh/fey-ds
+
+## Machine-readable resources
+
+- Component manifest: https://amtsh.github.io/fey-ds/design-system/components.json
+- Design tokens: https://amtsh.github.io/fey-ds/design-system/tokens.json
+
+## Important context
+
+- This is an independent Fey-inspired recreation, not affiliated with Fey or Wealthsimple.
+- Calibre is not bundled; the site uses the system font stack and will use SF Pro on Apple platforms.
+- Cards use surface tint rather than generic shadows or hard borders.
+- Hairlines are reserved for tables, tabs, and structural separators.
+- Green and red communicate financial performance only.
+
+## Components
+
+PillButton, IconButton, Kbd, TickerBadge, Delta, TextInput, TextArea, Checkbox, Toggle, Radio, Select, Chip, Alert, Spinner, Progress, Skeleton, Tabs, Toast, EmptyState, Pagination, Breadcrumb, Slider, MenuRow, Modal, SearchField, SegmentedControl, NavItem, SurfaceCard, NewsCard, InsiderRow, Sparkline, WatchlistRow, TickerHero, DataTable, EarningsChip, CommandPalette, StatTile, StatusDot.
+
+## Usage
+
+Use the JSON resources for exact token and component metadata. Prefer stable fragment IDs in the design-system gallery for human inspection.
